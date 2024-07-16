@@ -1,25 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import { TaskForm } from './components/TaskForm';
+import { Task } from './components/Task';
+
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [taskList, setTaskList] = useState([]);
+
+	const addTask = (task) => {
+		const newTask = { desc: task, id: taskList.length };
+		setTaskList([...taskList, newTask]);
+	};
+
+	const deleteTask = (id) => {
+		const newTaskList = taskList.filter((taskItem) => taskItem.id !== id);
+		setTaskList(newTaskList);
+	};
+
+	return (
+		<div className="App">
+			<TaskForm addTask={addTask} />
+
+			<ol>
+				{taskList.map((taskItem) => {
+					return (
+						<Task key={taskItem.id} deleteTask={deleteTask} task={taskItem} />
+					);
+				})}
+			</ol>
+		</div>
+	);
 }
 
 export default App;
